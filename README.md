@@ -17,3 +17,12 @@ copy .env.example .env
 docker compose up -d
 # open http://localhost:8080
 `
+
+## Compose profiles
+- Dev: mounts ./app and runs directly
+  - Start: docker compose --profile dev up -d
+- Prod: build image and run
+  - Start: docker compose --profile prod up -d
+
+## Healthcheck
+Container exposes GET http://localhost:8080/ returning "OK".

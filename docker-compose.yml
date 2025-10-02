@@ -1,9 +1,26 @@
 ﻿version: "3.9"
 services:
   quest:
+    profiles: [ "dev" ]
     image: python:3.11-slim
     working_dir: /app
     volumes: [ "./app:/app" ]
     command: bash -lc "pip install -r requirements.txt && python bot.py"
     environment: [ "BOT_TOKEN=${BOT_TOKEN}" ]
     ports: [ "8080:8080" ]
+    healthcheck:
+      test: ["CMD-SHELL", "python - << 'PY'\nimport urllib.request;urllib.request.urlopen('http://localhost:8080/')\nPY"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+  quest-prod:
+    profiles: [ "prod" ]
+    build: .
+    environment: [ "BOT_TOKEN=${BOT_TOKEN}" ]
+    ports: [ "8080:8080" ]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "python - << 'PY'\nimport urllib.request;urllib.request.urlopen('http://localhost:8080/')\nPY"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
