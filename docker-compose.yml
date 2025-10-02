@@ -1,0 +1,9 @@
+﻿version: "3.9"
+services:
+  quest:
+    image: python:3.11-slim
+    working_dir: /app
+    volumes: [ "./app:/app" ]
+    command: bash -lc "pip install -r requirements.txt && python bot.py"
+    environment: [ "BOT_TOKEN=\" ]
+    ports: [ "8080:8080" ]
